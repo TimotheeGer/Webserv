@@ -2,22 +2,24 @@
 #define SERVER_HPP
 
 #include <algorithm>
-#include <netinet/in.h>
 #include <arpa/inet.h>
+#include <netinet/in.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <sys/select.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <poll.h>
-#include <cstdlib>
-#include <cstdio>
 #include <string>
 #include <sstream>
 #include <iostream>
-#include <string.h>
-#include <cstring>
+// #include <string.h>
 #include <fstream>
-#include <stdlib.h>
+// #include <stdlib.h>
 
 class server {
 
@@ -26,10 +28,15 @@ class server {
         server(void);
         ~server(void);
 
-        int init_socket(void);
-        int wait_connection(void);
-        int new_socket(void);
-
+        int     init_socket(void);
+        int     wait_connection(void);
+        int     new_socket(void);
+        int     get_request(void);
+        void    open_file_and_make_bin(void);
+        void    make_response(void);
+        void    clear_server(void);
+        int     send_message(void);
+        std::string    error_page();
 
     private:
 
@@ -44,7 +51,12 @@ class server {
         char                _request[30000];
         uint16_t            _port;
         std::string         _response;
+        std::string         _http;
+        std::string         _final;
+        char*               http;
+        std::string         _error_code;
         FILE*               _document;
+
 
 
 };
