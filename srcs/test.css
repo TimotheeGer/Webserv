@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Hind:wght@400;700&display=swap");
+body {
+  width: 90%;
+  margin: 0 auto;
+  background-color: #d2e9f5;
+}
+
+h1 {
+  font-family: "Hind", sans-serif;
+}
+
+.img {
+  width: 100px;
+  margin: 0 auto;
+  /* border: 1px solid pink; */
+}
+.box {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 700px;
+  justify-content: center;
+  justify-items: center;
+  /* border: 1px solid green; */
+}
+
+.text {
+  opacity: 0.5;
+  line-height: 0%;
+  align-self: center;
+  /* border: 1px solid blue; */
+  text-align: center;
+  display: inline-block;
+}
+.line {
+  height: 1px;
+  background-color: black;
+  margin: 1rem;
+  opacity: 0.3;
+}
+/* .text_two {
+        display: flex;
+        text-align: center;
+        display: inline-block;
+        margin: 0 auto;
+        font-size: 7px;
+        line-height: 0%;
+        font-family: "Didact Gothic", sans-serif;
+      } */

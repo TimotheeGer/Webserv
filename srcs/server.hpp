@@ -17,9 +17,11 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <ostream>
 // #include <string.h>
 #include <fstream>
 // #include <stdlib.h>
+#include "parse.hpp"
 
 class server {
 
@@ -27,13 +29,14 @@ class server {
 
         server(void);
         ~server(void);
+		Parse	parse_r;
 
         int     init_socket(void);
         int     wait_connection(void);
         int     new_socket(void);
         int     get_request(void);
-        void    open_file_and_make_bin(void);
-        void    make_response(void);
+        int    	open_basics_files(void);
+        int    	make_response(void);
         void    clear_server(void);
         int     send_message(void);
         std::string    error_page();
@@ -47,15 +50,24 @@ class server {
         int                 _addrlen;
         char*               _content_bin;
         long                _content_size;
+		char*               _content_bin_two;
+        long                _content_size_two;
         char                _c_size[11];
         char                _request[30000];
         uint16_t            _port;
         std::string         _response;
+        std::string         _response_two;
         std::string         _http;
         std::string         _final;
         char*               http;
+        char*               http_two;
         std::string         _error_code;
         FILE*               _document;
+		std::string 		request_string;
+		std::string			GET;
+		std::string			Host;
+		std::string			Accept;
+		std::map<std::string, std::string> map_serv;
 
 
 
