@@ -19,8 +19,9 @@
 #include <iostream>
 #include <ostream>
 #include <fstream>
+#include <map>
 
-class Mimes {
+class mimes {
 
     public:
 
@@ -32,7 +33,7 @@ class Mimes {
 
     private:
 
-        std::map<std::string, std::string>, ft::comp> mimes_;
+        std::map<std::string, std::string> mimes_;
 
 };
 

@@ -1,3 +1,4 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 Makefile:3: *** missing separator.  Stop.
 
 # GNU Make 4.2.1
@@ -7,7 +8,7 @@ Makefile:3: *** missing separator.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Aug 29 13:26:18 2022
+# Make data base, printed on Tue Aug 30 16:37:08 2022
 
 # Variables
 
@@ -38,13 +39,15 @@ CURDIR := /mnt/nfs/homes/tnave/Desktop/Webserv
 # makefile
 SHELL = /bin/sh
 # environment
+GDM_LANG = en
+# environment
 VTE_VERSION = 6003
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
 _ = /usr/bin/code
 # environment
-JOURNAL_STREAM = 9:1963968
+JOURNAL_STREAM = 9:777988
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'Makefile', line 1)
@@ -62,13 +65,13 @@ XDG_DATA_DIRS = /usr/share/gnome:/usr/share/ubuntu:/mnt/nfs/homes/tnave/.local/s
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/39190/bus
 # environment
-MANAGERPID = 362989
+MANAGERPID = 175780
 # environment
 VSCODE_CWD = /mnt/nfs/homes/tnave/Desktop/Webserv
 # environment
-XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session5
+XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session4
 # environment
-KRB5CCNAME = FILE:/tmp/krb5cc_39190_TvijIx
+KRB5CCNAME = FILE:/tmp/krb5cc_39190_15KHpL
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -78,7 +81,7 @@ GPG_AGENT_INFO = /run/user/39190/gnupg/S.gpg-agent:0:1
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
-SESSION_MANAGER = local/e1r9p10.clusters.42paris.fr:@/tmp/.ICE-unix/363480,unix/e1r9p10.clusters.42paris.fr:/tmp/.ICE-unix/363480
+SESSION_MANAGER = local/e1r12p8.clusters.42paris.fr:@/tmp/.ICE-unix/176872,unix/e1r12p8.clusters.42paris.fr:/tmp/.ICE-unix/176872
 # environment
 XDG_RUNTIME_DIR = /run/user/39190
 # environment
@@ -86,7 +89,7 @@ XDG_MENU_PREFIX = gnome-
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 460ce5d40fbc486ead0189b26de63dd9
+INVOCATION_ID = b7389be046c14638af81932064ce6791
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -108,7 +111,7 @@ PWD = /mnt/nfs/homes/tnave/Desktop/Webserv
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 363444
+SSH_AGENT_PID = 176838
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -124,7 +127,7 @@ VSCODE_CODE_CACHE_PATH = /mnt/nfs/homes/tnave/.config/Code/CachedData/3b889b090b
 # environment
 LOGNAME = tnave
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 ZSH = /mnt/nfs/homes/tnave/.oh-my-zsh
 # environment
@@ -168,6 +171,8 @@ OLDPWD = /mnt/nfs/homes/tnave/Desktop
 # automatic
 *F = $(notdir $*)
 # environment
+LANGUAGE = en
+# environment
 XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
 # environment
 VSCODE_IPC_HOOK = /run/user/39190/vscode-070db602-1.69.2-main.sock
@@ -198,11 +203,11 @@ LC_ALL = C
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/3d3694be_df66_46fc_bfb8_593d2c3eda8e
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/bb18f6e2_7a8b_405a_b2e0_f82e1a5c9106
 # automatic
 ^F = $(notdir $^)
 # environment
-GNOME_TERMINAL_SERVICE = :1.81
+GNOME_TERMINAL_SERVICE = :1.108
 # default
 SUFFIXES := 
 # environment
@@ -222,9 +227,9 @@ TERM = xterm-256color
 # environment
 DOCKER_HOST = unix:///run/user/39190/docker.sock
 # environment
-VSCODE_PID = 364652
+VSCODE_PID = 178045
 # variable set hash-table stats:
-# Load=106/1024=10%, Rehash=0, Collisions=12/119=10%
+# Load=108/1024=11%, Rehash=0, Collisions=12/121=10%
 
 # Pattern-specific Variable Values
 
@@ -232,7 +237,7 @@ VSCODE_PID = 364652
 
 # Directories
 
-# . (device 57, inode 210704416): 9 files, no impossibilities.
+# . (device 59, inode 210704416): 9 files, no impossibilities.
 
 # 9 files, no impossibilities in 1 directories.
 
@@ -275,6 +280,6 @@ Makefile:
 # strcache performance: lookups = 18 / hit rate = 22%
 # hash-table stats:
 # Load=14/8192=0%, Rehash=0, Collisions=1/18=6%
-# Finished Make data base on Mon Aug 29 13:26:18 2022
+# Finished Make data base on Tue Aug 30 16:37:08 2022
 
  

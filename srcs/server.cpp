@@ -11,7 +11,7 @@ server::server(void) {
 	
 	this->_addrlen = sizeof(this->_address);
 	this->_port = 8080;
-	this->_error_code = "501";
+	// this->_error_code = "501";
 	this->_address.sin_family = AF_INET;
     this->_address.sin_addr.s_addr = INADDR_ANY;
     this->_address.sin_port = htons( this->_port );
@@ -81,15 +81,21 @@ int server::get_request(void) {
 int server::open_basics_files(void) {
 
 	this->parse_r.parse_request(this->_request, this->map_serv);
+	if (this->map_serv["GET"] == "favicon.ico")
+	{
+		std::cout << "Favicon fail" << std::endl;
+		return (EXIT_FAILURE);
+	}
 	std::cout << C_BLUE << "map_serv = [" << this->map_serv["GET"] <<  "]\n" << C_RESET << std::endl;
+	
 	std::ifstream input(this->map_serv["GET"], std::ios::binary);
 	if (!input.is_open())
-		return (EXIT_FAILURE);
+		return (404);
 	input.seekg(0, std::ios::end);
 	this->_content_size = input.tellg();
 	input.seekg(0, std::ios::beg);
 	std::sprintf(this->_c_size, "%lu", this->_content_size);
-	
+
 	if (!(this->_content_bin = (char*)malloc(sizeof(char) * this->_content_size)))
 		return (EXIT_FAILURE);
 	input.read(this->_content_bin, this->_content_size);
@@ -102,20 +108,48 @@ int server::open_basics_files(void) {
 }
 
 
+std::string server::write_response(void) {
+
+	std::string http;
+	std::string code;
+	std::string content_type;
+	std::string content_length;
+
+	http = "HTTP/1.1 ";
+	code = code + get_code_error_convert(this->code_test) + "\n";
+	content_type = content_type + "Content-Type: "
+								+ this->mimes_r.getTypes(this->map_serv["GET"].substr(this->map_serv["GET"].find('.', 0), std::string::npos)) + "\n";
+	content_length = content_length + "Content-Length: " + this->_c_size + "\n\n";
+
+	return http + code + content_type + content_length;
+}
+
+
 int server::make_response(void) {
 
-	// this->_response = this->_response + "HTTP/1.1 200 OK\nContent-Type: image/jpeg\nContent-Length: " + this->_c_size + "\n\n";
-	this->_response = this->_response + "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: " + this->_c_size + "\n\n";  
-	
-	if (!(this->http = (char *)malloc(sizeof(char) * (this->_response.size() + this->_content_size + 1))))
-		return (EXIT_FAILURE);
-	memset(this->http, 0, this->_response.size() + this->_content_size + 1);
-	memcpy(this->http, this->_response.c_str(), this->_response.size());
-    memcpy(this->http + strlen(http), this->_content_bin, this->_content_size);
+	this->_response = write_response();
 
-	std::cout 	<< C_RED << "--------------------Response + Bin--------------------" << C_RESET << std::endl
-				<< C_GREEN << this->http << C_RESET << std::endl 
-				<< C_RED << "--------------------Response + Bin--------------------" << C_RESET << std::endl << std::endl;
+	if (this->code_test != 404) {
+
+		if (!(this->http = (char *)malloc(sizeof(char) * (this->_response.size() + this->_content_size + 1))))
+			return (EXIT_FAILURE);
+		memset(this->http, 0, this->_response.size() + this->_content_size + 1);
+		memcpy(this->http, this->_response.c_str(), this->_response.size());
+    	memcpy(this->http + strlen(http), this->_content_bin, this->_content_size);
+
+		std::cout 	<< C_RED << "--------------------Response + Bin--------------------" << C_RESET << std::endl
+					<< C_GREEN << this->http << C_RESET << std::endl 
+					<< C_RED << "--------------------Response + Bin--------------------" << C_RESET << std::endl << std::endl;
+	}
+	if (this->code_test == 404) {
+		
+		if (!(this->http = (char *)malloc(sizeof(char) * (this->_response.size() + error_page().size() + 1))))
+			return (EXIT_FAILURE);
+		memset(this->http, 0, this->_response.size() + this->_content_size + 1);
+		memcpy(this->http, this->_response.c_str(), this->_response.size());
+    	memcpy(this->http + strlen(http), this->_content_bin, this->_content_size);
+	}
+
 	return (EXIT_SUCCESS);
 }
 
@@ -158,7 +192,7 @@ int server::wait_connection(void) {
 			return(EXIT_FAILURE);
 		if (get_request())
 			return(EXIT_FAILURE);
-		if (open_basics_files())
+		if ((this->code_test = open_basics_files()) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		if (make_response())
 			return (EXIT_FAILURE);	

@@ -22,6 +22,7 @@
 #include <fstream>
 // #include <stdlib.h>
 #include "parse.hpp"
+#include "mimes.hpp"
 
 class server {
 
@@ -29,7 +30,9 @@ class server {
 
         server(void);
         ~server(void);
+		
 		Parse	parse_r;
+		mimes	mimes_r;
 
         int     init_socket(void);
         int     wait_connection(void);
@@ -39,6 +42,7 @@ class server {
         int    	make_response(void);
         void    clear_server(void);
         int     send_message(void);
+		std::string write_response(void);
         std::string    error_page();
 
     private:
@@ -60,6 +64,8 @@ class server {
         std::string         _http;
         std::string         _final;
         char*               http;
+		std::string			code;
+		int					code_test;
         char*               http_two;
         std::string         _error_code;
         FILE*               _document;
@@ -68,6 +74,7 @@ class server {
 		std::string			Host;
 		std::string			Accept;
 		std::map<std::string, std::string> map_serv;
+		std::map<int, std::string> map_code;
 
 
 

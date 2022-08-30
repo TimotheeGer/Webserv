@@ -82,6 +82,6 @@ std::string server::error_page() {
   </body>
 </html>)"};
 
-    std::string final_error_page = error_page + this->_error_code + error_page_two + this->_error_code + error_page_three;
+    std::string final_error_page = error_page + this->code_test + error_page_two + this->code_test + error_page_three;
     return(final_error_page);
 }

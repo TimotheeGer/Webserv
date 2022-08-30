@@ -1,5 +1,6 @@
 #include "mimes.hpp"
-Mimes::Mimes() {
+
+mimes::mimes() {
 
   mimes_[".html"] = "text/html";
   mimes_[".htm"] = "text/html";
@@ -121,7 +122,9 @@ Mimes::Mimes() {
 
 }
 
-std::string Mimes::getTypes(std::string extension) {
+mimes::~mimes() { return; };
+
+std::string mimes::getTypes(std::string extension) {
 
 	if (!extension.size())
 		return "application/octet-stream";

@@ -35,8 +35,6 @@ std::string Parse::get_request(std::string word) {
 		}
 		i++;
 	}
-	// std::cout << "GET = [" << tab[1] << "]" << std::endl;
-	printf("GET = [%s]\n", tab[1].c_str());
 	return (tab[1]);
 }
 
@@ -47,6 +45,7 @@ int	Parse::parse_request(std::string request, std::map<std::string, std::string>
 	map_req["GET"] = get_request("GET ").erase(0, 1);
 	map_req["Host"] = get_request("Host: ");
 	map_req["Accept"] = get_request("Accept: ");
+
 
 	this->tab_request.clear();
 	this->tab_get.clear();

@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/mnt/nfs/homes/tnave/Desktop/Webserv'
+make: Leaving directory '/mnt/nfs/homes/tnave/Desktop/Webserv'
+ 
+Makefile:3: *** missing separator.  Stop.
+
