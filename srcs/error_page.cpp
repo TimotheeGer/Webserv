@@ -1,7 +1,7 @@
 #include "color.hpp"
 #include "server.hpp"
 
-std::string server::error_page() {
+std::string server::error_page(void) {
 
     std::string error_page{R"(<!DOCTYPE html>
 <html>
@@ -82,6 +82,7 @@ std::string server::error_page() {
   </body>
 </html>)"};
 
-    std::string final_error_page = error_page + this->code_test + error_page_two + this->code_test + error_page_three;
+    std::string final_error_page;
+    final_error_page = final_error_page + error_page + "404" + error_page_two + "404" + error_page_three;
     return(final_error_page);
 }

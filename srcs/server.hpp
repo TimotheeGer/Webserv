@@ -42,6 +42,7 @@ class server {
         int    	make_response(void);
         void    clear_server(void);
         int     send_message(void);
+        std::string get_code_error_convert(int error);
 		std::string write_response(void);
         std::string    error_page();
 
