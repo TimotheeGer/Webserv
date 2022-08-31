@@ -18,7 +18,9 @@ server::server(void) {
 	this->_content_bin = NULL;
 	this->_content_bin_two = NULL;
 	this->http = NULL;
-    
+
+    init_map_code();
+	
 	memset(this->_address.sin_zero, '\0', sizeof(this->_address.sin_zero));
 	memset(this->_c_size, '\0', sizeof(this->_c_size));
 	memset(this->_request, '\0', sizeof(this->_request));
@@ -31,40 +33,6 @@ server::~server(void) { return; };
 // ************************************************************************** //
 //                               member fonction                          	  //
 // ************************************************************************** //
-
-
-
-int server::init_socket(void) {
-
-	std::cout << C_CYAN << "\n- init socket -\n" << C_RESET << std::endl;
-
-	if ((this->_server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
-    {
-        perror("In socket");
-        return(EXIT_FAILURE);
-    }
-    if (bind(this->_server_fd, (struct sockaddr *)&this->_address, sizeof(this->_address))<0)
-    {
-        perror("In bind");
-        return(EXIT_FAILURE);
-    }
-    if (listen(this->_server_fd, 10) < 0)
-    {
-        perror("In listen");
-        return(EXIT_FAILURE);
-    }
-	return(EXIT_SUCCESS);
-};
-
-int server::new_socket(void) {
-	
-	if ((this->_new_socket = accept(this->_server_fd, (struct sockaddr *)&this->_address, (socklen_t*)&this->_addrlen))<0)
-    {
-        perror("In accept");
-        return(EXIT_FAILURE);
-    }
-	return(EXIT_SUCCESS);
-}
 
 int server::get_request(void) {
     
@@ -89,28 +57,8 @@ int server::open_basics_files(void) {
 	std::cout << C_BLUE << "map_serv = [" << this->map_serv["GET"] <<  "]\n" << C_RESET << std::endl;
 	
 	std::ifstream input(this->map_serv["GET"], std::ios::binary);
-	
 	if (!input.is_open())
-	{
-		std::cout << C_BLUE << "map_serv = [" << this->map_serv["GET"] <<  "]\n" << C_RESET << std::endl;
-		
-		std::ifstream input_two("404.html", std::ios::binary);
-		std::cout << "BEFORE : ["<<  this->_c_size << "] AND [CONTENT SIZE : [" << this->_content_size << "]" << std::endl;
-		input_two.seekg(0, std::ios::end);
-		this->_content_size = input_two.tellg();
-		input_two.seekg(0, std::ios::beg);
-		std::sprintf(this->_c_size, "%lu", this->_content_size);
-		std::cout << "AFTER : ["<<  this->_c_size << "] AND [CONTENT SIZE : [" << this->_content_size << "]" << std::endl;
-
-		if (!(this->_content_bin = (char*)malloc(sizeof(char) * this->_content_size)))
-			return (EXIT_FAILURE);
-		input_two.read(this->_content_bin, this->_content_size);
-		std::cout 	<< C_BOLDCYAN << "--------------------Bin Make--------------------" << C_RESET << std::endl;
-		std::cout << C_YELLOW << this->_content_bin << C_RESET << std::endl;
-		std::cout 	<< C_BOLDCYAN << "--------------------Bin Make--------------------" << C_RESET << std::endl << std::endl;
-
-		return (404);
-	}
+		return (make_bin_error_page(404));
 
 	input.seekg(0, std::ios::end);
 	this->_content_size = input.tellg();
@@ -137,30 +85,22 @@ std::string server::write_response(void) {
 	std::string content_length;
 
 	http = "HTTP/1.1 ";
-	// code = code + "200 OK" + "\n";
 	code = code + get_code_error_convert(this->code_test) + "\n";
-	if (this->code_test == 404)
-	{
-		// std::sprintf(this->_c_size, "%lu", error_page().size());
-		content_type = content_type + "Content-Type: "
-									+ "text/html" + "\n";
-		// content_type = content_type + "Content-Type: "
-		// 							+ this->mimes_r.getTypes(this->map_serv["GET"].substr(this->map_serv["GET"].find('.', 0), std::string::npos)) + "\n";
-		std::cout << "BEFORE : ["<<  this->_c_size << "] AND [CONTENT SIZE : [" << this->_content_size << "]" << std::endl;
-
-		content_length = content_length + "Content-Length: " + this->_c_size + "\n\n";
-
-	}
-	else {
+	if (this->code_test == 200) {
 
 		content_type = content_type + "Content-Type: "
 									+ this->mimes_r.getTypes(this->map_serv["GET"].substr(this->map_serv["GET"].find('.', 0), std::string::npos)) + "\n";
 		content_length = content_length + "Content-Length: " + this->_c_size + "\n\n";
 	}
-
+	else if (is_error_code(this->code_test) == EXIT_SUCCESS) {
+		
+		content_type = content_type + "Content-Type: "
+									+ "text/html" + "\n";
+		content_length = content_length + "Content-Length: " + this->_c_size + "\n\n";
+	}
 	std::string etiquette;
 	etiquette = etiquette + http + code + content_type + content_length;
-	std::cout << C_RED << "code error = [" << this->code_test  << "]\n[" << etiquette << "]" << C_RESET << std::endl;
+	std::cout << C_RED << "[ code error = [" << this->code_test  << "]\n[" << etiquette << "]" << C_RESET << std::endl;
 
 	return (etiquette);
 }
@@ -170,30 +110,16 @@ int server::make_response(void) {
 
 	this->_response = write_response();
 
-	if (this->code_test == 501) {
-		
-		if (!(this->http = (char *)malloc(sizeof(char) * (this->_response.size() + error_page().size() + 1))))
-			return (EXIT_FAILURE);
-		memset(this->http, 0, this->_response.size() + error_page().size() + 1);
-		memcpy(this->http, this->_response.c_str(), this->_response.size());
-    	memcpy(this->http + strlen(http), error_page().c_str(), error_page().size());
 
-		std::cout 	<< C_RED << "--------------------Response + Bin404--------------------" << C_RESET << std::endl
-					<< C_GREEN << this->http << C_RESET << std::endl 
-					<< C_RED << "--------------------Response + Bin404--------------------" << C_RESET << std::endl << std::endl;
-	}
-	else {
-
-		if (!(this->http = (char *)malloc(sizeof(char) * (this->_response.size() + this->_content_size + 1))))
-			return (EXIT_FAILURE);
-		memset(this->http, 0, this->_response.size() + this->_content_size + 1);
-		memcpy(this->http, this->_response.c_str(), this->_response.size());
-    	memcpy(this->http + strlen(http), this->_content_bin, this->_content_size);
-
-		std::cout 	<< C_RED << "--------------------Response + Bin--------------------" << C_RESET << std::endl
-					<< C_GREEN << this->http << C_RESET << std::endl 
-					<< C_RED << "--------------------Response + Bin--------------------" << C_RESET << std::endl << std::endl;
-	}
+	if (!(this->http = (char *)malloc(sizeof(char) * (this->_response.size() + this->_content_size + 1))))
+		return (EXIT_FAILURE);
+	memset(this->http, 0, this->_response.size() + this->_content_size + 1);
+	memcpy(this->http, this->_response.c_str(), this->_response.size());
+	memcpy(this->http + strlen(http), this->_content_bin, this->_content_size);
+	
+	std::cout 	<< C_RED << "--------------------Response + Bin--------------------" << C_RESET << std::endl
+				<< C_GREEN << this->http << C_RESET << std::endl 
+				<< C_RED << "--------------------Response + Bin--------------------" << C_RESET << std::endl << std::endl;
 	return (EXIT_SUCCESS);
 }
 
@@ -223,6 +149,7 @@ void server::clear_server(void) {
 	this->map_serv.clear();
 	this->_response.clear();    
 	close(this->_new_socket);
+	std::remove(this->_code_char);
 }
 
 

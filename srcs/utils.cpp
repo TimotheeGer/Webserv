@@ -1,6 +1,6 @@
 #include "server.hpp"
 
-std::string server::get_code_error_convert(int error) {
+void	server::init_map_code(void) {
 
 	map_code[100] = "100 Continue";
 	map_code[101] = "101 Switching Protocols";
@@ -12,9 +12,19 @@ std::string server::get_code_error_convert(int error) {
 	map_code[400] = "400 Bad Request";
 	map_code[404] = "404 Not Found";
 	map_code[501] = "404 Not Found";
+}
+
+std::string server::get_code_error_convert(int error) {
 
 	if (map_code.count(error))
 		return (map_code[error]);
 	return (map_code[400]);
+}
+
+int server::is_error_code(int error) {
+
+	if (map_code.count(error))
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 

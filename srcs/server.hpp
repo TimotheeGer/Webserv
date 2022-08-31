@@ -42,9 +42,13 @@ class server {
         int    	make_response(void);
         void    clear_server(void);
         int     send_message(void);
+        void	init_map_code(void);
         std::string get_code_error_convert(int error);
+        int     is_error_code(int error);
 		std::string write_response(void);
-        std::string    error_page();
+        int     error_page(int error);
+        int     make_bin_error_page(int error);
+
 
     private:
 
@@ -58,6 +62,7 @@ class server {
 		char*               _content_bin_two;
         long                _content_size_two;
         char                _c_size[11];
+        char                _code_char[9];
         char                _request[30000];
         uint16_t            _port;
         std::string         _response;
