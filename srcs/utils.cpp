@@ -11,6 +11,7 @@ std::string server::get_code_error_convert(int error) {
 	map_code[202] = "202 Accepted";
 	map_code[400] = "400 Bad Request";
 	map_code[404] = "404 Not Found";
+	map_code[501] = "404 Not Found";
 
 	if (map_code.count(error))
 		return (map_code[error]);

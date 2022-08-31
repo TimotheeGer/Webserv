@@ -89,11 +89,29 @@ int server::open_basics_files(void) {
 	std::cout << C_BLUE << "map_serv = [" << this->map_serv["GET"] <<  "]\n" << C_RESET << std::endl;
 	
 	std::ifstream input(this->map_serv["GET"], std::ios::binary);
+	
 	if (!input.is_open())
 	{
-		std::cout << "fail open" << std::endl;
+		std::cout << C_BLUE << "map_serv = [" << this->map_serv["GET"] <<  "]\n" << C_RESET << std::endl;
+		
+		std::ifstream input_two("404.html", std::ios::binary);
+		std::cout << "BEFORE : ["<<  this->_c_size << "] AND [CONTENT SIZE : [" << this->_content_size << "]" << std::endl;
+		input_two.seekg(0, std::ios::end);
+		this->_content_size = input_two.tellg();
+		input_two.seekg(0, std::ios::beg);
+		std::sprintf(this->_c_size, "%lu", this->_content_size);
+		std::cout << "AFTER : ["<<  this->_c_size << "] AND [CONTENT SIZE : [" << this->_content_size << "]" << std::endl;
+
+		if (!(this->_content_bin = (char*)malloc(sizeof(char) * this->_content_size)))
+			return (EXIT_FAILURE);
+		input_two.read(this->_content_bin, this->_content_size);
+		std::cout 	<< C_BOLDCYAN << "--------------------Bin Make--------------------" << C_RESET << std::endl;
+		std::cout << C_YELLOW << this->_content_bin << C_RESET << std::endl;
+		std::cout 	<< C_BOLDCYAN << "--------------------Bin Make--------------------" << C_RESET << std::endl << std::endl;
+
 		return (404);
 	}
+
 	input.seekg(0, std::ios::end);
 	this->_content_size = input.tellg();
 	input.seekg(0, std::ios::beg);
@@ -123,12 +141,15 @@ std::string server::write_response(void) {
 	code = code + get_code_error_convert(this->code_test) + "\n";
 	if (this->code_test == 404)
 	{
-		std::sprintf(this->_c_size, "%lu", error_page().size());
+		// std::sprintf(this->_c_size, "%lu", error_page().size());
 		content_type = content_type + "Content-Type: "
 									+ "text/html" + "\n";
 		// content_type = content_type + "Content-Type: "
 		// 							+ this->mimes_r.getTypes(this->map_serv["GET"].substr(this->map_serv["GET"].find('.', 0), std::string::npos)) + "\n";
+		std::cout << "BEFORE : ["<<  this->_c_size << "] AND [CONTENT SIZE : [" << this->_content_size << "]" << std::endl;
+
 		content_length = content_length + "Content-Length: " + this->_c_size + "\n\n";
+
 	}
 	else {
 
@@ -149,13 +170,11 @@ int server::make_response(void) {
 
 	this->_response = write_response();
 
-	if (this->code_test == 404) {
+	if (this->code_test == 501) {
 		
 		if (!(this->http = (char *)malloc(sizeof(char) * (this->_response.size() + error_page().size() + 1))))
 			return (EXIT_FAILURE);
-		// memset(this->http, 0, this->_response.size() + this->_content_size + 1);
-		long num = <static long>this->_c_size;
-		memset(this->http, 0, this->_response.size() + num + 1);
+		memset(this->http, 0, this->_response.size() + error_page().size() + 1);
 		memcpy(this->http, this->_response.c_str(), this->_response.size());
     	memcpy(this->http + strlen(http), error_page().c_str(), error_page().size());
 
