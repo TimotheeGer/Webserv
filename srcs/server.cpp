@@ -90,7 +90,10 @@ int server::open_basics_files(void) {
 	
 	std::ifstream input(this->map_serv["GET"], std::ios::binary);
 	if (!input.is_open())
+	{
+		std::cout << "fail open" << std::endl;
 		return (404);
+	}
 	input.seekg(0, std::ios::end);
 	this->_content_size = input.tellg();
 	input.seekg(0, std::ios::beg);
@@ -136,9 +139,9 @@ std::string server::write_response(void) {
 
 	std::string etiquette;
 	etiquette = etiquette + http + code + content_type + content_length;
-	std::cout << C_RED << "code error = " << this->code_test  << " -\n" << etiquette << C_RESET << std::endl;
+	std::cout << C_RED << "code error = [" << this->code_test  << "]\n[" << etiquette << "]" << C_RESET << std::endl;
 
-	return (http + code + content_type + content_length);
+	return (etiquette);
 }
 
 
@@ -150,7 +153,9 @@ int server::make_response(void) {
 		
 		if (!(this->http = (char *)malloc(sizeof(char) * (this->_response.size() + error_page().size() + 1))))
 			return (EXIT_FAILURE);
-		memset(this->http, 0, this->_response.size() + this->_content_size + 1);
+		// memset(this->http, 0, this->_response.size() + this->_content_size + 1);
+		long num = <static long>this->_c_size;
+		memset(this->http, 0, this->_response.size() + num + 1);
 		memcpy(this->http, this->_response.c_str(), this->_response.size());
     	memcpy(this->http + strlen(http), error_page().c_str(), error_page().size());
 

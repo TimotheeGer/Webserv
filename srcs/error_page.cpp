@@ -83,6 +83,6 @@ std::string server::error_page(void) {
 </html>)"};
 
     std::string final_error_page;
-    final_error_page = final_error_page + error_page + "404" + error_page_two + "404" + error_page_three;
+    final_error_page = final_error_page + error_page + "404" + error_page_two + "404" + error_page_three + '\0';
     return(final_error_page);
 }
