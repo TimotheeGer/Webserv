@@ -1,9 +1,9 @@
-#include "color.hpp"
-#include "server.hpp"
+#include "../hpp/color.hpp"
+#include "../hpp/server.hpp"
 
 int server::error_page(int error) {
 
-    std::string error_page{R"(<!DOCTYPE html>
+    std::string error_page = {R"(<!DOCTYPE html>
 <html>
   <head>
     <style>

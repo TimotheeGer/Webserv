@@ -1,5 +1,5 @@
-#include "color.hpp"
-#include "server.hpp"
+#include "../hpp/color.hpp"
+#include "../hpp/server.hpp"
 
 // ************************************************************************** //
 //                               Constructor                             	  //
@@ -11,7 +11,6 @@ server::server(void) {
 	
 	this->_addrlen = sizeof(this->_address);
 	this->_port = 8080;
-	// this->_error_code = "501";
 	this->_address.sin_family = AF_INET;
     this->_address.sin_addr.s_addr = INADDR_ANY;
     this->_address.sin_port = htons( this->_port );
@@ -46,27 +45,44 @@ int server::get_request(void) {
 	return(EXIT_SUCCESS);
 }
 
+
+
+
+
+
+
+
 int server::open_basics_files(void) {
 
 	this->parse_r.parse_request(this->_request, this->map_serv);
+
+	std::cout << C_MAGENTA << "[TEST POST5]" << C_RESET << std::endl;
+
 	if (this->map_serv["GET"] == "favicon.ico")
 	{
 		std::cout << "Favicon fail" << std::endl;
 		return (EXIT_FAILURE);
 	}
-	std::cout << C_BLUE << "map_serv = [" << this->map_serv["GET"] <<  "]\n" << C_RESET << std::endl;
+	std::cout << C_BLUE << "map_serv = [" << this->map_serv["GET"].c_str() <<  "]\n" << C_RESET << std::endl;
+	std::cout << C_BLUE << "map_serv = [" << this->map_serv["POST"].c_str() <<  "]\n" << C_RESET << std::endl;
 	
 	std::ifstream input(this->map_serv["GET"], std::ios::binary);
 	if (!input.is_open())
+	{
+		std::cout << C_MAGENTA << "PATH = " << this->map_serv["GET"].c_str() << C_RESET << std::endl;
 		return (make_bin_error_page(404));
+	}
 
 	input.seekg(0, std::ios::end);
 	this->_content_size = input.tellg();
 	input.seekg(0, std::ios::beg);
 	std::sprintf(this->_c_size, "%lu", this->_content_size);
 
-	if (!(this->_content_bin = (char*)malloc(sizeof(char) * this->_content_size)))
+	if (!(this->_content_bin = (char*)malloc(sizeof(char) * this->_content_size))) {
+
+		std::cout << C_BLUE << "[TEST2]\n" << C_RESET << std::endl;
 		return (EXIT_FAILURE);
+	}
 	input.read(this->_content_bin, this->_content_size);
 
 	std::cout 	<< C_BOLDCYAN << "--------------------Bin Make--------------------" << C_RESET << std::endl;
@@ -89,7 +105,7 @@ std::string server::write_response(void) {
 	if (this->code_test == 200) {
 
 		content_type = content_type + "Content-Type: "
-									+ this->mimes_r.getTypes(this->map_serv["GET"].substr(this->map_serv["GET"].find('.', 0), std::string::npos)) + "\n";
+									+ this->mimes_r.getTypes(this->map_serv["GET"].substr(this->map_serv["GET"].find('.', 3), std::string::npos)) + "\n";
 		content_length = content_length + "Content-Length: " + this->_c_size + "\n\n";
 	}
 	else if (is_error_code(this->code_test) == EXIT_SUCCESS) {
@@ -100,7 +116,7 @@ std::string server::write_response(void) {
 	}
 	std::string etiquette;
 	etiquette = etiquette + http + code + content_type + content_length;
-	std::cout << C_RED << "[ code error = [" << this->code_test  << "]\n[" << etiquette << "]" << C_RESET << std::endl;
+	std::cout << C_RED << "[code error = [" << this->code_test  << "]\n[" << etiquette << "]" << C_RESET << std::endl;
 
 	return (etiquette);
 }

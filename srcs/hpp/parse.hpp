@@ -35,7 +35,7 @@ class Parse {
 	private:
 	
 		std::vector<std::string> split_in_tabs(std::string request, std::string del, std::vector<std::string> &tab);
-		std::string get_request(std::string word);
+		std::string get_request(std::string word, std::string c, int x);
 		
 		std::vector<std::string> tab_request;
 		std::vector<std::string> tab_get;

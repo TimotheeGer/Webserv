@@ -1,5 +1,5 @@
-#include "color.hpp"
-#include "server.hpp"
+#include "../hpp/color.hpp"
+#include "../hpp/server.hpp"
 
 // ************************************************************************** //
 //                               member fonction                          	  //

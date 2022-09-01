@@ -1,4 +1,4 @@
-#include "server.hpp"
+#include "../hpp/server.hpp"
 
 void	server::init_map_code(void) {
 
@@ -11,7 +11,7 @@ void	server::init_map_code(void) {
 	map_code[202] = "202 Accepted";
 	map_code[400] = "400 Bad Request";
 	map_code[404] = "404 Not Found";
-	map_code[501] = "404 Not Found";
+	map_code[501] = "501 Not Implemented";
 }
 
 std::string server::get_code_error_convert(int error) {
