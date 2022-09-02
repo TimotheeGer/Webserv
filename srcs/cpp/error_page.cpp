@@ -1,91 +1,85 @@
-#include "../hpp/color.hpp"
 #include "../hpp/server.hpp"
 
 int server::error_page(int error) {
 
-    std::string error_page = {R"(<!DOCTYPE html>
-<html>
-  <head>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Hind:wght@400;700&display=swap");
-      body {
-        width: 90%;
-        margin: 0 auto;
-        background-color: #d2e9f5;
-      }
-
-      h1 {
-        font-family: "Hind", sans-serif;
-      }
-
-      .img {
-        width: 100px;
-        margin: 0 auto;
-        /* border: 1px solid pink; */
-      }
-      .box {
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        height: 700px;
-        justify-content: center;
-        justify-items: center;
-        /* border: 1px solid green; */
-      }
-
-      .text {
-        opacity: 0.5;
-        line-height: 0%;
-        align-self: center;
-        /* border: 1px solid blue; */
-        text-align: center;
-        display: inline-block;
-      }
-      .line {
-        height: 1px;
-        background-color: black;
-        margin: 1rem;
-        opacity: 0.3;
-      }
-      /* .text_two {
-        display: flex;
-        text-align: center;
-        display: inline-block;
-        margin: 0 auto;
-        font-size: 7px;
-        line-height: 0%;
-        font-family: "Didact Gothic", sans-serif;
-      } */
-    </style>
-    <meta charset="utf-8" />
-	<title>)"};
-    // code error
-    std::string error_page_two {R"(</title>
-    <link href="https://profile.intra.42.fr/assets/42_logo_black-684989d43d629b3c0ff6fd7e1157ee04db9bb7a73fba8ec4e01543d650a1c607.png" rel="icon" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
-  <body>
-    <div class="box">
-      <div class="img">
-        <img
-          src="https://oms-inventaires.com/wp-content/uploads/2020/09/Inventuren_Icons_Balken.svg"
-          alt="logo"
-          class="logo"
-        />
-      </div>
-      <div class="text">
-        <h1>)"};
-    // code error
-    std::string error_page_three {R"(</h1>
-      </div>
-    </div>
-  </body>
-</html>)"};
-
+    _error_page_html += "<!DOCTYPE html>\n\
+<html>\n\
+	<head>\n\
+		<style>\n\
+			@import url(\"https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Hind:wght@400;700&display=swap\");\n\
+			body {\n\
+  				width: 90%;\n\
+  				margin: 0 auto;\n\
+  				background-color: #d2e9f5;\n\
+			}\n\
+			h1 {\n\
+			  font-family: \"Hind\", sans-serif;\n\
+			}\n\
+			.img {\n\
+			  width: 100px;\n\
+			  margin: 0 auto;\n\
+			  /* border: 1px solid pink; */\n\
+			}\n\
+			.box {\n\
+			  margin: 0 auto;\n\
+			  display: flex;\n\
+			  flex-direction: column;\n\
+			  height: 700px;\n\
+			  justify-content: center;\n\
+			  justify-items: center;\n\
+			  /* border: 1px solid green; */\n\
+			}\n\
+			.text {\n\
+			  opacity: 0.5;\n\
+			  line-height: 0%;\n\
+			  align-self: center;\n\
+			  /* border: 1px solid blue; */\n\
+			  text-align: center;\n\
+			  display: inline-block;\n\
+			}\n\
+			.line {\n\
+			  height: 1px;\n\
+			  background-color: black;\n\
+			  margin: 1rem;\n\
+			  opacity: 0.3;\n\
+			}\n\
+			/* .text_two {\n\
+			  display: flex;\n\
+			  text-align: center;\n\
+			  display: inline-block;\n\
+			  margin: 0 auto;\n\
+			  font-size: 7px;\n\
+			  line-height: 0%;\n\
+			  font-family: \"Didact Gothic\", sans-serif;\n\
+			} */\n\
+		</style>\n\
+		<meta charset=\"utf-8\" />\n\
+	<title>";
+	
+	_error_page_html += get_code_error_convert(error);
     
-    std::string final_error_page;
-
-    final_error_page = final_error_page + error_page + get_code_error_convert(error) + error_page_two + get_code_error_convert(error) + error_page_three + '\0';
+	_error_page_html += "(</title>\n\
+	<link href=\"https://profile.intra.42.fr/assets/42_logo_black-684989d43d629b3c0ff6fd7e1157ee04db9bb7a73fba8ec4e01543d650a1c607.png\" rel=\"icon\" type=\"image/png\">\n\
+	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n\
+	</head>\n\
+	<body>\n\
+		<div class=\"box\">\n\
+		<div class=\"img\">\n\
+			<img\n\
+			src=\"https://oms-inventaires.com/wp-content/uploads/2020/09/Inventuren_Icons_Balken.svg\"\n\
+			alt=\"logo\"\n\
+			class=\"logo\"\n\
+			/>\n\
+		</div>\n\
+		<div class=\"text\">\n\
+			<h1>";
+	_error_page_html += get_code_error_convert(error);
+	
+	_error_page_html += "</h1>\n\
+			</div>\n\
+		</div>\n\
+	</body>\n\
+</html>";
     
     std::sprintf(this->_code_char, "%d.html", this->code_test);
 
@@ -93,7 +87,7 @@ int server::error_page(int error) {
     ofs.open(this->_code_char, std::ofstream::out);
     if(!ofs.is_open())
       return(EXIT_FAILURE);
-    ofs << final_error_page;
+    ofs << _error_page_html;
     ofs.close();
     
     return(EXIT_SUCCESS);

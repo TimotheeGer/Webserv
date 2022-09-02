@@ -6,6 +6,6 @@ int main() {
 
     tim.init_socket();
     tim.wait_connection();
-    
+
     return 0;
 }

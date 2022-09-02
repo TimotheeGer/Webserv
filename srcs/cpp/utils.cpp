@@ -1,5 +1,10 @@
 #include "../hpp/server.hpp"
 
+void server::Print_test(int num_test) {
+
+    std::cout << C_MAGENTA << "[TEST " << num_test << "]" << C_RESET << std::endl;
+}
+
 void	server::init_map_code(void) {
 
 	map_code[100] = "100 Continue";
@@ -27,4 +32,13 @@ int server::is_error_code(int error) {
 		return (EXIT_SUCCESS);
 	return (EXIT_FAILURE);
 }
+
+std::string server::get_method(void) {
+
+	return(_map_request["METHOD"]);
+}
+
+
+
+
 
