@@ -21,8 +21,10 @@
 // #include <string.h>
 #include <fstream>
 // #include <stdlib.h>
+#include "color.hpp"
 #include "parse.hpp"
 #include "mimes.hpp"
+#define EXIT_SKIP 999
 
 class server {
 
@@ -48,6 +50,9 @@ class server {
 		std::string     write_response(void);
         int             error_page(int error);
         int             make_bin_error_page(int error);
+        int             is_favicon(void);
+        void            Print_test(int num_test);
+        std::string     get_method();
 
 
     private:
@@ -57,17 +62,14 @@ class server {
         long                                    _valread;
         struct sockaddr_in                      _address;
         int                                     _addrlen;
+        
         char*                                   _content_bin;
         long                                    _content_size;
-		char*                                   _content_bin_two;
-        long                                    _content_size_two;
         char                                    _c_size[11];
         char                                    _code_char[9];
         char                                    _request[30000];
         uint16_t                                _port;
         std::string                             _response;
-        std::string                             _response_two;
-        std::string                             _http;
         std::string                             _final;
         char*                                   http;
 		std::string			                    code;
@@ -79,9 +81,9 @@ class server {
 		std::string			                    GET;
 		std::string			                    Host;
 		std::string			                    Accept;
-		std::map<std::string, std::string>      map_serv;
+		std::map<std::string, std::string>      _map_request;
 		std::map<int, std::string>              map_code;
-
+        std::string                             _error_page_html;
 
 
 };

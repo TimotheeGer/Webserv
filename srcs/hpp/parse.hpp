@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "color.hpp"
 
 class Parse {
 
@@ -36,6 +37,7 @@ class Parse {
 	
 		std::vector<std::string> split_in_tabs(std::string request, std::string del, std::vector<std::string> &tab);
 		std::string get_request(std::string word, std::string c, int x);
+		std::string get_method_parse(std::vector<std::string> &request);
 		
 		std::vector<std::string> tab_request;
 		std::vector<std::string> tab_get;

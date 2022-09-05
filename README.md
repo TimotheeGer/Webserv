@@ -7,7 +7,7 @@ https://www.youtube.com/results?search_query=build+http+server+c%2B%2B
 https://beej.us/guide/bgnet/
 https://www.digitalocean.com/community/tutorials/understanding-nginx-server-and-location-block-selection-algorithms
 https://nginx.org/en/docs/dirindex.html
-
+https://www.simplilearn.com/tutorials/php-tutorial/server-in-php
 
 https://github.com/Dungyichao/http_server
 
